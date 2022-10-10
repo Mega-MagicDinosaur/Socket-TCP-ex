@@ -10,6 +10,8 @@ public class App
     {
         ClientStr client = new ClientStr();
         client.connetti();
-        client.comunica();
+        
+        try { client.comunica(); }
+        catch (Exception e) { System.out.println(e.getMessage()); }
     }
 }

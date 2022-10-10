@@ -13,24 +13,30 @@ public class ClientStr {
     BufferedReader inServer;
 
     public Socket connetti() {
-        try {
-            tastiera = new BufferedReader(new InputStreamReader(System.in));
-            socket = new Socket(nomeServer, porta);
-            outServer = new DataOutputStream(socket.getOutputStream());
-            inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch(Exception exc) { System.out.println(exc.getMessage()); }
+            try {
+                tastiera = new BufferedReader(new InputStreamReader(System.in));
+                socket = new Socket(nomeServer, porta);
+                outServer = new DataOutputStream(socket.getOutputStream());
+                inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            } catch(Exception exc) { System.out.println(exc.getMessage()); }
 
-        return socket;
+            return socket;
     }
 
-    public void comunica() {
-        try {
+    public void comunica() throws IOException {
+        while (true) {
             System.out.println("inserisci stringa");
             inputString = tastiera.readLine();
             outServer.writeBytes(inputString+"\n");
             recievedString = inServer.readLine();
             System.out.println("response is: " + recievedString);
-            socket.close();
-        } catch (Exception exc) { System.out.println(exc.getMessage()); }
+            // socket.close();
+
+            if (inputString == null || inputString == "" || inputString.equals("EXIT") || inputString.equals("CLOSE")) { 
+                socket.close();
+                break; 
+            }
+            System.out.println("lol");
+        }
     }
 }
